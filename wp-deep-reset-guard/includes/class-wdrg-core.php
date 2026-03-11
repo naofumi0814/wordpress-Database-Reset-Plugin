@@ -207,8 +207,9 @@ class WDRG_Core {
             $challenge_token  = isset( $_POST['challenge_token'] ) ? sanitize_text_field( wp_unslash( $_POST['challenge_token'] ) ) : '';
             $challenge_answer = isset( $_POST['challenge_answer'] ) ? intval( $_POST['challenge_answer'] ) : 0;
 
-            // 本実行の最初のステップでのみチャレンジを検証（後続ステップではトークンが既に消費されている）
-            if ( $step === 'themes' || $step === 'all_start' ) {
+            // 最初のステップでのみチャレンジを検証（後続ステップではトークンが既に消費されている）
+            $is_first_step = isset( $_POST['is_first_step'] ) && $_POST['is_first_step'] === '1';
+            if ( $is_first_step ) {
                 if ( ! WDRG_Safety::verify_challenge( $challenge_token, $challenge_answer ) ) {
                     wp_send_json_error( array( 'message' => '確認問題の回答が正しくないか、有効期限が切れています。' ), 400 );
                 }

@@ -40,18 +40,30 @@
      * 「全選択」チェックボックスの制御
      */
     function initCheckAllHandlers() {
-        $('.wdrg-check-all').on('change', function () {
+        // 「全選択」チェックボックス — click イベントで確実に拾う
+        $(document).on('click change', '.wdrg-check-all', function (e) {
+            if (e.type === 'click' && e.handled) return;
+            e.handled = true;
             var group = $(this).data('group');
             var checked = $(this).is(':checked');
-            $('.wdrg-item-check[data-group="' + group + '"]').prop('checked', checked);
+            $('.wdrg-item-check[data-group="' + group + '"]').prop('checked', checked).trigger('change.wdrg');
         });
 
         // 個別チェック変更時に全選択の状態を更新
-        $(document).on('change', '.wdrg-item-check', function () {
+        $(document).on('change change.wdrg', '.wdrg-item-check', function () {
             var group = $(this).data('group');
             var allChecks = $('.wdrg-item-check[data-group="' + group + '"]');
             var allChecked = allChecks.length === allChecks.filter(':checked').length;
             $('.wdrg-check-all[data-group="' + group + '"]').prop('checked', allChecked);
+        });
+
+        // 初期表示時に全選択チェックボックスの状態を同期
+        $('.wdrg-check-all').each(function () {
+            var group = $(this).data('group');
+            var allChecks = $('.wdrg-item-check[data-group="' + group + '"]');
+            if (allChecks.length === 0) return;
+            var allChecked = allChecks.length === allChecks.filter(':checked').length;
+            $(this).prop('checked', allChecked);
         });
     }
 
@@ -76,7 +88,7 @@
     function initChallengeHandler() {
         $('#wdrg-verify-challenge').on('click', function () {
             var answer = parseInt($('#wdrg-challenge-answer').val(), 10);
-            var expected = wdrgData.challengeNum1 + wdrgData.challengeNum2;
+            var expected = parseInt(wdrgData.challengeNum1, 10) + parseInt(wdrgData.challengeNum2, 10);
             var $result = $('#wdrg-challenge-result');
 
             if (isNaN(answer)) {
@@ -258,6 +270,7 @@
             postData.challenge_token = wdrgData.challengeToken;
             postData.challenge_answer = $('#wdrg-challenge-answer').val();
             postData.confirm_text = $('#wdrg-confirm-text-input').val();
+            postData.is_first_step = (index === 0) ? '1' : '0';
         }
 
         // DB操作時はメソッドを追加
