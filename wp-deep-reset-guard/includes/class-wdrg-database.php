@@ -138,8 +138,114 @@ class WDRG_Database {
             }
         }
 
+        // TRUNCATE の場合、wp_options を初期化していたら基本設定を再挿入
+        if ( $method === 'truncate' && in_array( $prefix . 'options', $table_names, true ) && ! $this->dry_run ) {
+            $this->reseed_options( $prefix );
+        }
+
         $this->logger->info( 'データベース初期化処理が完了しました。' );
         return $results;
+    }
+
+    /**
+     * wp_options に WordPress が動作するための最低限の設定を再挿入する
+     *
+     * @param string $prefix テーブルプレフィックス
+     */
+    private function reseed_options( string $prefix ): void {
+        global $wpdb;
+
+        $site_url = defined( 'WP_SITEURL' ) ? WP_SITEURL : '';
+        $home_url = defined( 'WP_HOME' ) ? WP_HOME : $site_url;
+
+        // wp-config.php で定義されていない場合はリクエストURLから推測
+        if ( empty( $site_url ) ) {
+            $scheme   = is_ssl() ? 'https' : 'http';
+            $host     = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : 'localhost';
+            $site_url = $scheme . '://' . $host;
+            $home_url = $site_url;
+        }
+
+        $options_table = $prefix . 'options';
+
+        $defaults = array(
+            'siteurl'                 => $site_url,
+            'home'                    => $home_url,
+            'blogname'                => 'サイト名',
+            'blogdescription'         => 'Just another WordPress site',
+            'users_can_register'      => '0',
+            'admin_email'             => '',
+            'start_of_week'           => '1',
+            'use_balanceTags'         => '0',
+            'use_smilies'             => '1',
+            'require_name_email'      => '1',
+            'comments_notify'         => '1',
+            'posts_per_rss'           => '10',
+            'rss_use_excerpt'         => '0',
+            'mailserver_url'          => 'mail.example.com',
+            'mailserver_login'        => 'login@example.com',
+            'mailserver_pass'         => 'password',
+            'mailserver_port'         => '110',
+            'default_category'        => '1',
+            'default_comment_status'  => 'open',
+            'default_ping_status'     => 'open',
+            'default_pingback_flag'   => '1',
+            'posts_per_page'          => '10',
+            'date_format'             => 'Y年n月j日',
+            'time_format'             => 'H:i',
+            'links_updated_date_format' => 'Y年n月j日 H:i',
+            'comment_moderation'      => '0',
+            'moderation_notify'       => '1',
+            'permalink_structure'     => '/%postname%/',
+            'rewrite_rules'           => '',
+            'template'                => 'twentytwentyfive',
+            'stylesheet'              => 'twentytwentyfive',
+            'active_plugins'          => serialize( array() ),
+            'widget_block'            => serialize( array() ),
+            'sidebars_widgets'        => serialize( array() ),
+            'WPLANG'                  => '',
+            'db_version'              => $GLOBALS['wp_db_version'] ?? '',
+            'initial_db_version'      => $GLOBALS['wp_db_version'] ?? '',
+            'wp_user_roles'           => '',
+        );
+
+        // 現在のログインユーザーのメールアドレスを使用
+        $current_user = wp_get_current_user();
+        if ( $current_user && $current_user->user_email ) {
+            $defaults['admin_email'] = $current_user->user_email;
+        }
+
+        // 利用可能な標準テーマを検出
+        $default_themes = array_reverse( WDRG_Safety::DEFAULT_THEMES );
+        foreach ( $default_themes as $theme_slug ) {
+            $theme = wp_get_theme( $theme_slug );
+            if ( $theme->exists() ) {
+                $defaults['template']   = $theme_slug;
+                $defaults['stylesheet'] = $theme_slug;
+                break;
+            }
+        }
+
+        $inserted = 0;
+        foreach ( $defaults as $name => $value ) {
+            $result = $wpdb->insert(
+                $options_table,
+                array(
+                    'option_name'  => $name,
+                    'option_value' => $value,
+                    'autoload'     => 'yes',
+                ),
+                array( '%s', '%s', '%s' )
+            );
+            if ( false !== $result ) {
+                $inserted++;
+            }
+        }
+
+        $this->logger->success(
+            'wp_options に基本設定を再挿入しました（' . $inserted . '/' . count( $defaults ) . '件）。',
+            $options_table
+        );
     }
 
     /**

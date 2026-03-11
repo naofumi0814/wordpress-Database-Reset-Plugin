@@ -255,6 +255,9 @@ class WDRG_Scanner {
             $prefix . 'usermeta',
         );
 
+        // 設定テーブルを特定
+        $options_table = $prefix . 'options';
+
         foreach ( $tables as $table ) {
             $table_name = $table['Name'];
 
@@ -263,19 +266,21 @@ class WDRG_Scanner {
                 continue;
             }
 
-            $is_user_table = in_array( $table_name, $user_tables, true );
-            $rows          = isset( $table['Rows'] ) ? (int) $table['Rows'] : 0;
-            $data_length   = isset( $table['Data_length'] ) ? (int) $table['Data_length'] : 0;
-            $index_length  = isset( $table['Index_length'] ) ? (int) $table['Index_length'] : 0;
-            $total_size    = $data_length + $index_length;
+            $is_user_table    = in_array( $table_name, $user_tables, true );
+            $is_options_table = ( $table_name === $options_table );
+            $rows             = isset( $table['Rows'] ) ? (int) $table['Rows'] : 0;
+            $data_length      = isset( $table['Data_length'] ) ? (int) $table['Data_length'] : 0;
+            $index_length     = isset( $table['Index_length'] ) ? (int) $table['Index_length'] : 0;
+            $total_size       = $data_length + $index_length;
 
             $result[] = array(
-                'name'          => $table_name,
-                'rows'          => $rows,
-                'size'          => $total_size,
-                'size_human'    => size_format( $total_size ),
-                'engine'        => $table['Engine'] ?? '',
-                'is_user_table' => $is_user_table,
+                'name'             => $table_name,
+                'rows'             => $rows,
+                'size'             => $total_size,
+                'size_human'       => size_format( $total_size ),
+                'engine'           => $table['Engine'] ?? '',
+                'is_user_table'    => $is_user_table,
+                'is_options_table' => $is_options_table,
             );
         }
 

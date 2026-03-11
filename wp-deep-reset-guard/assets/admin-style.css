@@ -336,6 +336,26 @@
     background: #f6f7f7;
 }
 
+/* リセット完了通知 */
+.wdrg-reset-complete-notice {
+    background: #f0f6fc;
+    border: 2px solid #2271b1;
+    border-radius: 4px;
+    padding: 20px 25px;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.wdrg-reset-complete-notice h3 {
+    margin: 0 0 10px;
+    color: #2271b1;
+    font-size: 1.3em;
+}
+
+.wdrg-reset-complete-notice .button {
+    margin: 5px;
+}
+
 /* レスポンシブ */
 @media screen and (max-width: 782px) {
     .wdrg-action-section .button-hero {

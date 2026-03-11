@@ -13,6 +13,9 @@
     /** 処理中フラグ（連打防止） */
     var isProcessing = false;
 
+    /** 現在の実行が dry-run かどうか */
+    var currentDryRun = true;
+
     /** 処理ステップ一覧 */
     var steps = ['themes', 'plugins', 'uploads', 'extra_dirs', 'database'];
 
@@ -184,6 +187,7 @@
      */
     function startExecution(dryRun) {
         isProcessing = true;
+        currentDryRun = dryRun;
         currentStepIndex = 0;
         totalResults = { success: 0, fail: 0, skip: 0 };
 
@@ -334,6 +338,18 @@
         // 本実行ボタンは安全のため無効のまま（ページ再読み込みが必要）
 
         appendLog('INFO', '全処理が完了しました。', '');
+
+        // 本実行時はリダイレクト案内を表示
+        if (!currentDryRun && totalResults.success > 0) {
+            var adminUrl = wdrgData.ajaxUrl.replace('/admin-ajax.php', '/');
+            var $notice = $('<div class="wdrg-reset-complete-notice">' +
+                '<h3>リセットが完了しました</h3>' +
+                '<p>サイトが初期状態にリセットされました。</p>' +
+                '<p><a href="' + adminUrl + '" class="button button-primary">管理画面トップへ移動</a> ' +
+                '<a href="' + adminUrl + 'install.php" class="button">WordPress 再インストール</a></p>' +
+                '</div>');
+            $('#wdrg-summary').after($notice);
+        }
 
         // ログ末尾にスクロール
         var $logOutput = $('#wdrg-log-output');

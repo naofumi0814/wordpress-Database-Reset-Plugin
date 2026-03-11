@@ -216,12 +216,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
         <div class="wdrg-db-warning">
             <p><strong>⚠ データベース操作は特に危険です。</strong></p>
-            <p>DROP: テーブルごと完全削除 / TRUNCATE: テーブル構造は残してデータだけ削除</p>
+            <p>TRUNCATE: テーブル構造は残してデータだけ削除（WordPress が動作可能な状態を維持）</p>
+            <p>DROP: テーブルごと完全削除（WordPress の再インストールが必要になります）</p>
         </div>
 
         <div class="wdrg-db-method">
-            <label><input type="radio" name="wdrg_db_method" value="drop" checked="checked" /> DROP TABLE（テーブルごと削除）</label>
-            <label><input type="radio" name="wdrg_db_method" value="truncate" /> TRUNCATE TABLE（データだけ削除）</label>
+            <label><input type="radio" name="wdrg_db_method" value="truncate" checked="checked" /> TRUNCATE TABLE（データだけ削除）<strong>— 推奨</strong></label>
+            <label><input type="radio" name="wdrg_db_method" value="drop" /> DROP TABLE（テーブルごと削除）</label>
         </div>
 
         <?php if ( empty( $db_tables ) ) : ?>
@@ -240,8 +241,12 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </thead>
                 <tbody>
                     <?php foreach ( $db_tables as $table ) : ?>
+                        <?php
+                            $is_protected = $table['is_user_table'] || $table['is_options_table'];
+                            $default_checked = ! $is_protected;
+                        ?>
                         <tr class="<?php echo $table['is_user_table'] ? 'wdrg-row-danger' : ''; ?>">
-                            <td><input type="checkbox" class="wdrg-item-check" data-group="database" value="<?php echo esc_attr( $table['name'] ); ?>" /></td>
+                            <td><input type="checkbox" class="wdrg-item-check" data-group="database" value="<?php echo esc_attr( $table['name'] ); ?>" <?php echo $default_checked ? 'checked="checked"' : ''; ?> /></td>
                             <td><code><?php echo esc_html( $table['name'] ); ?></code></td>
                             <td><?php echo esc_html( number_format( $table['rows'] ) ); ?></td>
                             <td><?php echo esc_html( $table['size_human'] ); ?></td>
@@ -249,6 +254,8 @@ if ( ! defined( 'ABSPATH' ) ) {
                             <td>
                                 <?php if ( $table['is_user_table'] ) : ?>
                                     <span class="wdrg-badge wdrg-badge-danger">⚠ ユーザーテーブル - 削除するとログイン不能になります</span>
+                                <?php elseif ( $table['is_options_table'] ) : ?>
+                                    <span class="wdrg-badge wdrg-badge-danger">⚠ 設定テーブル - 初期化後に基本設定を再挿入します</span>
                                 <?php endif; ?>
                             </td>
                         </tr>
