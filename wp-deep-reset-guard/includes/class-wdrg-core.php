@@ -230,8 +230,8 @@ class WDRG_Core {
                 wp_send_json_error( array( 'message' => '確認テキストが正しくありません。' ), 400 );
             }
 
-            // 連打チェック
-            if ( ! WDRG_Safety::check_rate_limit() ) {
+            // 連打チェック（最初のステップのみ — バッチ処理の後続ステップはスキップ）
+            if ( $is_first_step && ! WDRG_Safety::check_rate_limit() ) {
                 wp_send_json_error( array( 'message' => '連続実行が検出されました。数秒後にもう一度お試しください。' ), 429 );
             }
         }
