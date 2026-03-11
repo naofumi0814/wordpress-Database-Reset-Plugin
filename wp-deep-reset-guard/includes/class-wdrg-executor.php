@@ -78,7 +78,7 @@ class WDRG_Executor {
             }
 
             if ( $this->dry_run ) {
-                $this->logger->info( '[DRY-RUN] テーマを削除します。', $theme_dir );
+                $this->logger->success( '[DRY-RUN] テーマを削除対象です。', $theme_dir );
                 $results[] = array( 'slug' => $slug, 'status' => 'dry_run' );
                 continue;
             }
@@ -178,7 +178,7 @@ class WDRG_Executor {
             }
 
             if ( $this->dry_run ) {
-                $this->logger->info( '[DRY-RUN] プラグインを削除します。', $target_path );
+                $this->logger->success( '[DRY-RUN] プラグインを削除対象です。', $target_path );
                 $results[] = array( 'file' => $plugin_file, 'status' => 'dry_run' );
                 continue;
             }
@@ -255,7 +255,7 @@ class WDRG_Executor {
 
             if ( $this->dry_run ) {
                 $type = is_dir( $path ) ? 'ディレクトリ' : 'ファイル';
-                $this->logger->info( '[DRY-RUN] ' . $type . 'を削除します。', $path );
+                $this->logger->success( '[DRY-RUN] ' . $type . 'を削除対象です。', $path );
                 $results[] = array( 'name' => $item_name, 'status' => 'dry_run' );
                 continue;
             }
@@ -323,7 +323,7 @@ class WDRG_Executor {
             }
 
             if ( $this->dry_run ) {
-                $this->logger->info( '[DRY-RUN] フォルダを削除します。', $path );
+                $this->logger->success( '[DRY-RUN] フォルダを削除対象です。', $path );
                 $results[] = array( 'name' => $dir_name, 'status' => 'dry_run' );
                 continue;
             }

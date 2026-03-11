@@ -296,9 +296,9 @@
 
                     // サマリーを加算
                     if (data.summary) {
-                        totalResults.success += data.summary.success_count || 0;
-                        totalResults.fail += data.summary.fail_count || 0;
-                        totalResults.skip += data.summary.skip_count || 0;
+                        totalResults.success += parseInt(data.summary.success_count, 10) || 0;
+                        totalResults.fail += parseInt(data.summary.fail_count, 10) || 0;
+                        totalResults.skip += parseInt(data.summary.skip_count, 10) || 0;
                     }
                 } else {
                     var errMsg = (response.data && response.data.message) ? response.data.message : '不明なエラー';

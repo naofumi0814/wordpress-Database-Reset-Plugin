@@ -103,7 +103,7 @@ class WDRG_Database {
 
             if ( $this->dry_run ) {
                 $action = ( $method === 'truncate' ) ? 'TRUNCATE' : 'DROP';
-                $this->logger->info( '[DRY-RUN] ' . $action . ' TABLE を実行します。', $table_name );
+                $this->logger->success( '[DRY-RUN] ' . $action . ' TABLE を実行対象です。', $table_name );
                 $results[] = array(
                     'table'  => $table_name,
                     'status' => 'dry_run',

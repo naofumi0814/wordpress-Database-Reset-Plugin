@@ -18,6 +18,9 @@ class WDRG_Core {
     /** @var string 管理画面のスラッグ */
     const MENU_SLUG = 'wdrg-reset';
 
+    /** @var array|null 足し算チャレンジデータ（ページ内で1回だけ生成） */
+    private $challenge = null;
+
     /**
      * シングルトンインスタンスを取得
      *
@@ -86,8 +89,11 @@ class WDRG_Core {
             true
         );
 
-        // 足し算チャレンジを生成
-        $challenge = WDRG_Safety::generate_challenge();
+        // 足し算チャレンジを生成（1回だけ）
+        if ( null === $this->challenge ) {
+            $this->challenge = WDRG_Safety::generate_challenge();
+        }
+        $challenge = $this->challenge;
 
         wp_localize_script( 'wdrg-admin-script', 'wdrgData', array(
             'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
@@ -122,8 +128,11 @@ class WDRG_Core {
         $extra_dirs  = WDRG_Scanner::scan_extra_dirs();
         $db_tables   = WDRG_Scanner::scan_database();
 
-        // 足し算チャレンジ
-        $challenge = WDRG_Safety::generate_challenge();
+        // 足し算チャレンジ（enqueue_assets で生成済みのものを使う）
+        if ( null === $this->challenge ) {
+            $this->challenge = WDRG_Safety::generate_challenge();
+        }
+        $challenge = $this->challenge;
 
         // テンプレート読み込み
         include WDRG_PLUGIN_DIR . 'templates/admin-page.php';
