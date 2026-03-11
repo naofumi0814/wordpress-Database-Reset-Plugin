@@ -1,0 +1,353 @@
+/**
+ * WP Deep Reset Guard - 管理画面スタイル
+ */
+
+/* 全体ラッパー */
+.wdrg-wrap {
+    max-width: 1200px;
+}
+
+/* 警告バナー */
+.wdrg-warning-banner {
+    background: #d63638;
+    color: #fff;
+    padding: 20px 25px;
+    margin: 20px 0;
+    border-radius: 4px;
+    border-left: 6px solid #8b0000;
+}
+
+.wdrg-warning-banner h2 {
+    color: #fff;
+    margin: 0 0 10px;
+    font-size: 1.4em;
+}
+
+.wdrg-warning-banner p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* セクション */
+.wdrg-section {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.wdrg-section h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* テーブル */
+.wdrg-item-table {
+    margin-top: 10px;
+}
+
+.wdrg-item-table th,
+.wdrg-item-table td {
+    vertical-align: middle;
+}
+
+.wdrg-item-table code {
+    background: #f0f0f1;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+/* バッジ */
+.wdrg-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.wdrg-badge-active {
+    background: #00a32a;
+    color: #fff;
+}
+
+.wdrg-badge-inactive {
+    background: #dcdcde;
+    color: #50575e;
+}
+
+.wdrg-badge-danger {
+    background: #d63638;
+    color: #fff;
+}
+
+.wdrg-note {
+    font-size: 11px;
+    color: #d63638;
+    margin-left: 5px;
+}
+
+/* 空メッセージ */
+.wdrg-empty {
+    color: #50575e;
+    font-style: italic;
+    padding: 10px 0;
+}
+
+/* 操作モード */
+.wdrg-mode-section .wdrg-mode-label {
+    display: block;
+    margin: 10px 0;
+    padding: 12px 15px;
+    background: #f6f7f7;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.wdrg-mode-section .wdrg-mode-label:hover {
+    border-color: #2271b1;
+}
+
+.wdrg-mode-section .wdrg-mode-label input:checked + strong {
+    color: #2271b1;
+}
+
+/* uploads サマリー */
+.wdrg-uploads-summary {
+    background: #f0f6fc;
+    border: 1px solid #c3c4c7;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+/* DB警告 */
+.wdrg-db-warning {
+    background: #fcf0f1;
+    border: 1px solid #d63638;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.wdrg-db-warning p {
+    margin: 5px 0;
+    color: #8b0000;
+}
+
+.wdrg-db-method {
+    margin-bottom: 15px;
+}
+
+.wdrg-db-method label {
+    display: inline-block;
+    margin-right: 20px;
+    padding: 8px 12px;
+    background: #f6f7f7;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* 危険行 */
+.wdrg-row-danger {
+    background: #fcf0f1 !important;
+}
+
+/* 安全確認セクション */
+.wdrg-safety-section {
+    border-color: #d63638;
+    border-width: 2px;
+}
+
+.wdrg-challenge-question {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1d2327;
+    margin: 15px 0;
+    padding: 15px;
+    background: #f0f6fc;
+    display: inline-block;
+    border-radius: 4px;
+}
+
+.wdrg-challenge .regular-text {
+    width: 150px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.wdrg-challenge-result {
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+.wdrg-challenge-result.success {
+    color: #00a32a;
+}
+
+.wdrg-challenge-result.error {
+    color: #d63638;
+}
+
+.wdrg-confirm-text {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.wdrg-confirm-text .regular-text {
+    width: 400px;
+    font-size: 14px;
+}
+
+/* アクションボタン */
+.wdrg-action-section {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.wdrg-action-section .button-hero {
+    margin: 0 10px;
+    min-width: 200px;
+}
+
+.wdrg-btn-danger {
+    background: #d63638 !important;
+    border-color: #8b0000 !important;
+    color: #fff !important;
+}
+
+.wdrg-btn-danger:hover {
+    background: #8b0000 !important;
+}
+
+.wdrg-btn-danger:disabled {
+    background: #dcdcde !important;
+    border-color: #c3c4c7 !important;
+    color: #a7aaad !important;
+    cursor: not-allowed;
+}
+
+/* プログレスバー */
+.wdrg-progress {
+    margin: 20px 0;
+}
+
+.wdrg-progress-bar {
+    width: 100%;
+    height: 30px;
+    background: #f0f0f1;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #c3c4c7;
+}
+
+.wdrg-progress-fill {
+    height: 100%;
+    background: #2271b1;
+    text-align: center;
+    line-height: 30px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+    transition: width 0.3s ease;
+    min-width: 40px;
+}
+
+#wdrg-progress-text {
+    text-align: center;
+    margin-top: 8px;
+    color: #50575e;
+}
+
+/* ログ表示 */
+.wdrg-log-area {
+    margin-top: 20px;
+}
+
+.wdrg-log-output {
+    max-height: 400px;
+    overflow-y: auto;
+    background: #1d2327;
+    color: #c3c4c7;
+    padding: 15px;
+    border-radius: 4px;
+    font-family: "Consolas", "Monaco", monospace;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.wdrg-log-output .log-entry {
+    margin-bottom: 2px;
+}
+
+.wdrg-log-output .log-time {
+    color: #72aee6;
+}
+
+.wdrg-log-output .log-level-SUCCESS {
+    color: #00ba37;
+}
+
+.wdrg-log-output .log-level-ERROR {
+    color: #d63638;
+}
+
+.wdrg-log-output .log-level-WARNING {
+    color: #dba617;
+}
+
+.wdrg-log-output .log-level-INFO {
+    color: #72aee6;
+}
+
+.wdrg-log-output .log-level-SKIP {
+    color: #a7aaad;
+}
+
+/* サマリーテーブル */
+#wdrg-summary {
+    margin: 15px 0;
+}
+
+#wdrg-summary th {
+    width: 100px;
+}
+
+#wdrg-summary-success {
+    color: #00a32a;
+    font-weight: 700;
+}
+
+#wdrg-summary-fail {
+    color: #d63638;
+    font-weight: 700;
+}
+
+/* サイト情報テーブル */
+.wdrg-site-info th {
+    width: 180px;
+    background: #f6f7f7;
+}
+
+/* レスポンシブ */
+@media screen and (max-width: 782px) {
+    .wdrg-action-section .button-hero {
+        display: block;
+        margin: 10px auto;
+    }
+
+    .wdrg-challenge-question {
+        font-size: 18px;
+    }
+
+    .wdrg-confirm-text .regular-text {
+        width: 100%;
+    }
+}
